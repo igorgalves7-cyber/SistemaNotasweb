@@ -1,0 +1,43 @@
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Número</th>
+
+<th>Fornecedor</th>
+
+<th>Valor</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for nota in notas %}
+
+<tr>
+
+<td>{{ nota.id }}</td>
+
+<td>{{ nota.numero }}</td>
+
+<td>{{ nota.fornecedor }}</td>
+
+<td>R$ {{ "%.2f"|format(nota.valor) }}</td>
+
+<td>{{ nota.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
