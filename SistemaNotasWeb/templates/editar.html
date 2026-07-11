@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+
+{% block conteudo %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning">
+
+            <h3>Editar Nota Fiscal</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+                        <label>Número</label>
+                        <input type="text" class="form-control" name="numero" value="{{ nota.numero }}" required>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>Série</label>
+                        <input type="text" class="form-control" name="serie" value="{{ nota.serie }}">
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Data Emissão</label>
+                        <input type="date" class="form-control" name="data_emissao" value="{{ nota.data_emissao }}">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Data Recebimento</label>
+                        <input type="date" class="form-control" name="data_recebimento" value="{{ nota.data_recebimento }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Fornecedor</label>
+                        <input type="text" class="form-control" name="fornecedor" value="{{ nota.fornecedor }}" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Nome Fantasia</label>
+                        <input type="text" class="form-control" name="nome_fantasia" value="{{ nota.nome_fantasia }}">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>CNPJ</label>
+                        <input type="text" class="form-control" name="cnpj" value="{{ nota.cnpj }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+                        <label>Contrato</label>
+                        <input type="text" class="form-control" name="contrato" value="{{ nota.contrato }}">
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Demanda</label>
+                        <input type="text" class="form-control" name="demanda" value="{{ nota.demanda }}">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Campanha</label>
+                        <input type="text" class="form-control" name="campanha" value="{{ nota.campanha }}">
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>PI</label>
+                        <input type="text" class="form-control" name="pi" value="{{ nota.pi }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label>Tipo Serviço</label>
+                        <input type="text" class="form-control" name="tipo_servico" value="{{ nota.tipo_servico }}">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Meio</label>
+                        <input type="text" class="form-control" name="meio" value="{{ nota.meio }}">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Descrição</label>
+                        <input type="text" class="form-control" name="descricao" value="{{ nota.descricao }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Tipo Praça</label>
+                        <input type="text" class="form-control" name="tipo_praca" value="{{ nota.tipo_praca }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Praça</label>
+                        <input type="text" class="form-control" name="praca" value="{{ nota.praca }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Valor</label>
+                        <input type="number" step="0.01" class="form-control" name="valor" value="{{ nota.valor }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Valor Veiculação</label>
+                        <input type="number" step="0.01" class="form-control" name="valor_veiculacao" value="{{ nota.valor_veiculacao }}">
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label>Ocorrência</label>
+                    <textarea class="form-control" rows="4" name="ocorrencia">{{ nota.ocorrencia }}</textarea>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Conferente</label>
+                        <input type="text" class="form-control" name="conferente" value="{{ nota.conferente }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>NUP</label>
+                        <input type="text" class="form-control" name="nup" value="{{ nota.nup }}">
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Data Envio</label>
+                        <input type="date" class="form-control" name="data_envio" value="{{ nota.data_envio }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Data Pagamento</label>
+                        <input type="date" class="form-control" name="data_pagamento" value="{{ nota.data_pagamento }}">
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label>Novo PDF</label>
+                    <input type="file" class="form-control" name="pdf" accept=".pdf">
+                </div>
+
+                <button class="btn btn-success">
+                    Salvar Alterações
+                </button>
+
+                <a href="/" class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
