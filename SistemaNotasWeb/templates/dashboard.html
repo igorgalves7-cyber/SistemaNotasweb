@@ -1,232 +1,62 @@
-{% extends "layout.html" %}
-
-{% block conteudo %}
-
-<div class="container-fluid mt-4">
-
-    <h2 class="mb-4">Dashboard</h2>
-
-    <!-- Cards -->
-
-    <div class="row mb-4">
-
-        <div class="col-md-2">
-            <div class="card text-center border-primary shadow">
-                <div class="card-body">
-                    <h6>Total</h6>
-                    <h3>{{ total_notas }}</h3>
-                </div>
-            </div>
+{% extends 'base.html' %}
+{% block content %}
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="glass-card p-4">
+            <div class="text-muted small fw-bold">TOTAL EMPENHADO (2026)</div>
+            <div class="stat-value">R$ {{ "{:,.2f}".format(stats.valor_total) }}</div>
         </div>
-
-        <div class="col-md-2">
-            <div class="card text-center border-secondary shadow">
-                <div class="card-body">
-                    <h6>Recebidas</h6>
-                    <h3>{{ recebidas }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card text-center border-success shadow">
-                <div class="card-body">
-                    <h6>Aprovadas</h6>
-                    <h3>{{ aprovadas }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card text-center border-warning shadow">
-                <div class="card-body">
-                    <h6>Pendências</h6>
-                    <h3>{{ pendencias }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card text-center border-info shadow">
-                <div class="card-body">
-                    <h6>Pagas</h6>
-                    <h3>{{ pagas }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card text-center border-dark shadow">
-                <div class="card-body">
-                    <h6>Valor Total</h6>
-                    <h6>R$ {{ "%.2f"|format(valor_total) }}</h6>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-    <!-- Pesquisa -->
-
-    <form method="GET" class="mb-4">
-
-        <div class="input-group">
-
-            <input
-                type="text"
-                name="pesquisa"
-                class="form-control"
-                placeholder="Pesquisar por número, fornecedor, campanha ou CNPJ..."
-                value="{{ pesquisa }}">
-
-            <button class="btn btn-primary">
-                Pesquisar
-            </button>
-
-            <a href="/" class="btn btn-secondary">
-                Limpar
-            </a>
-
-            <a href="/receber" class="btn btn-success">
-                Nova Nota
-            </a>
-
+    <div class="col-md-4">
+        <div class="glass-card p-4 border-start border-warning border-4">
+            <div class="text-muted small fw-bold">AGUARDANDO LIQUIDAÇÃO</div>
+            <div class="stat-value text-warning">{{ stats.pendentes }} <span class="fs-6 text-muted">Docs</span></div>
         </div>
-
-    </form>
-
-    <!-- Tabela -->
-
-    <div class="table-responsive">
-
-        <table class="table table-striped table-hover align-middle">
-
-            <thead class="table-dark">
-
-                <tr>
-
-                    <th>ID</th>
-                    <th>Número</th>
-                    <th>Fornecedor</th>
-                    <th>Campanha</th>
-                    <th>Valor</th>
-                    <th>Status</th>
-                    <th>PDF</th>
-                    <th width="350">Ações</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for nota in notas %}
-
-                <tr>
-
-                    <td>{{ nota.id }}</td>
-
-                    <td>{{ nota.numero }}</td>
-
-                    <td>{{ nota.fornecedor }}</td>
-
-                    <td>{{ nota.campanha }}</td>
-
-                    <td>
-                        R$ {{ "%.2f"|format(nota.valor or 0) }}
-                    </td>
-
-                    <td>
-
-                        {% if nota.status == "Recebida" %}
-                            <span class="badge bg-secondary">{{ nota.status }}</span>
-
-                        {% elif nota.status == "Aprovada" %}
-                            <span class="badge bg-success">{{ nota.status }}</span>
-
-                        {% elif nota.status == "Pendência" %}
-                            <span class="badge bg-warning text-dark">{{ nota.status }}</span>
-
-                        {% elif nota.status == "Paga" %}
-                            <span class="badge bg-primary">{{ nota.status }}</span>
-
-                        {% endif %}
-
-                    </td>
-
-                    <td>
-
-                        {% if nota.pdf %}
-
-                            <a
-                                href="/visualizar/{{ nota.id }}"
-                                target="_blank"
-                                class="btn btn-outline-primary btn-sm">
-
-                                PDF
-
-                            </a>
-
-                        {% else %}
-
-                            <span class="text-muted">
-                                —
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-                    <td>
-
-                        <a href="/editar/{{ nota.id }}"
-                           class="btn btn-warning btn-sm">
-                            Editar
-                        </a>
-
-                        <a href="/aprovar/{{ nota.id }}"
-                           class="btn btn-success btn-sm">
-                            Aprovar
-                        </a>
-
-                        <a href="/pendencia/{{ nota.id }}"
-                           class="btn btn-secondary btn-sm">
-                            Pendência
-                        </a>
-
-                        <a href="/pagar/{{ nota.id }}"
-                           class="btn btn-info btn-sm">
-                            Pagar
-                        </a>
-
-                        <a href="/excluir/{{ nota.id }}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Deseja excluir esta nota?')">
-                            Excluir
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% else %}
-
-                <tr>
-
-                    <td colspan="8" class="text-center">
-                        Nenhuma nota encontrada.
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
     </div>
-
+    <div class="col-md-4">
+        <div class="glass-card p-4 border-start border-success border-4">
+            <div class="text-muted small fw-bold">LIQUIDADAS / PAGAS</div>
+            <div class="stat-value text-success">{{ stats.pagas }} <span class="fs-6 text-muted">Docs</span></div>
+        </div>
+    </div>
 </div>
 
+<div class="glass-card">
+    <table class="table table-dark table-hover mb-0">
+        <thead>
+            <tr>
+                <th class="ps-4">NÚMERO / NUP</th>
+                <th>FORNECEDOR</th>
+                <th>CAMPANHA</th>
+                <th>VALOR BRUTO</th>
+                <th>STATUS</th>
+                <th class="text-center">AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for n in notas %}
+            <tr>
+                <td class="ps-4">
+                    <span class="fw-bold">{{ n.numero }}</span><br>
+                    <small class="text-info">{{ n.nup or 'S/ NUP' }}</small>
+                </td>
+                <td>{{ n.fornecedor }}</td>
+                <td><span class="badge bg-dark border border-secondary">{{ n.campanha }}</span></td>
+                <td class="fw-bold">R$ {{ "{:,.2f}".format(n.valor) }}</td>
+                <td>
+                    <span class="badge {% if n.status == 'Pago' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                        {{ n.status }}
+                    </span>
+                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a href="{{ url_for('alterar_status', id=n.id, novo_status='Pago') }}" class="btn btn-sm btn-outline-success"><i class="bi bi-cash"></i></a>
+                        <a href="{{ url_for('excluir', id=n.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Deseja excluir este registro do Senado?')"><i class="bi bi-trash"></i></a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

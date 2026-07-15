@@ -1,87 +1,61 @@
-body{
-    background:#f4f6f9;
-    font-family:Arial,Helvetica,sans-serif;
+:root {
+    --senado-blue: #00274d;
+    --senado-gold: #c5a059;
+    --bg-dark: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --accent: #38bdf8;
 }
 
-.navbar{
-    margin-bottom:20px;
+body {
+    background-color: var(--bg-dark);
+    color: #f1f5f9;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-.card{
-    border:none;
-    border-radius:12px;
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-.card-header{
-    font-weight:bold;
-    font-size:18px;
+.nav-senado {
+    background: rgba(15, 23, 42, 0.9);
+    border-bottom: 1px solid var(--senado-gold);
+    backdrop-filter: blur(10px);
 }
 
-.table{
-    background:#fff;
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.table th{
-    text-align:center;
-    vertical-align:middle;
+.form-control, .form-select {
+    background-color: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
 
-.table td{
-    text-align:center;
-    vertical-align:middle;
+.form-control:focus {
+    background-color: rgba(15, 23, 42, 0.8);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
 }
 
-.btn{
-    border-radius:8px;
+.btn-senado {
+    background: linear-gradient(135deg, var(--senado-blue), #004080);
+    border: 1px solid var(--senado-gold);
+    color: white;
+    transition: all 0.3s ease;
 }
 
-input,
-select,
-textarea{
-    border-radius:8px !important;
-}
-
-.form-control:focus{
-    border-color:#0d6efd;
-    box-shadow:0 0 0 .2rem rgba(13,110,253,.25);
-}
-
-.badge{
-    font-size:14px;
-}
-
-.container-fluid,
-.container{
-    padding-top:15px;
-}
-
-.shadow{
-    box-shadow:0 0.5rem 1rem rgba(0,0,0,.15)!important;
-}
-
-h2,h3,h4{
-    font-weight:600;
-}
-
-.card:hover{
-    transform:translateY(-3px);
-    transition:.2s;
-}
-
-.table-responsive{
-    border-radius:10px;
-    overflow:hidden;
-}
-
-@media (max-width:768px){
-
-    .btn{
-        margin-bottom:5px;
-        width:100%;
-    }
-
-    .table{
-        font-size:13px;
-    }
-
+.btn-senado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    color: var(--senado-gold);
 }

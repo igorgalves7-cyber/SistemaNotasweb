@@ -1,407 +1,79 @@
-{% extends "layout.html" %}
-
-{% block conteudo %}
-
-<div class="container mt-4">
-
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white">
-            <h3>Cadastro de Nota Fiscal</h3>
-        </div>
-
-        <div class="card-body">
-
-            <!-- IMPORTAR PDF -->
-
-            <div class="card border-primary mb-4">
-
-                <div class="card-header bg-light">
-
-                    <strong>Importar PDF</strong>
-
-                </div>
-
-                <div class="card-body">
-
-                    <form action="/importar_pdf"
-                          method="POST"
-                          enctype="multipart/form-data">
-
-                        <div class="row">
-
-                            <div class="col-md-10">
-
-                                <input
-                                    type="file"
-                                    class="form-control"
-                                    name="arquivo"
-                                    accept=".pdf"
-                                    required>
-
-                            </div>
-
-                            <div class="col-md-2 d-grid">
-
-                                <button
-                                    class="btn btn-primary">
-
-                                    Ler PDF
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="glass-card p-5">
+            <h2 class="fw-bold mb-4 border-bottom border-secondary pb-3">Registro de Documento Fiscal</h2>
+            
+            {% if not dados %}
+            <!-- Área de Upload -->
+            <div class="text-center py-5 border border-dashed rounded-4 mb-4">
+                <form action="{{ url_for('importar') }}" method="POST" enctype="multipart/form-data">
+                    <i class="bi bi-cloud-upload display-1 text-info opacity-50"></i>
+                    <h4 class="mt-3">Arraste o PDF da NFS-e</h4>
+                    <p class="text-muted">O sistema realizará a leitura via OCR e Regex</p>
+                    <input type="file" name="file" class="form-control w-50 mx-auto mt-4" required>
+                    <button type="submit" class="btn btn-senado mt-3 px-5 py-2">PROCESSAR ARQUIVO</button>
+                </form>
             </div>
-
-            <hr>
-
-            <form
-                method="POST"
-                enctype="multipart/form-data">
-
-                <h4 class="mb-3">
-
-                    Dados da Nota
-
-                </h4>
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3">
-
-                        <label class="form-label">
-
-                            Número
-
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="numero"
-                            value="{{ dados.numero if dados else '' }}"
-                            required>
-
+            {% else %}
+            <!-- Formulário Preenchido -->
+            <form action="{{ url_for('salvar') }}" method="POST">
+                <input type="hidden" name="pdf" value="{{ dados.pdf }}">
+                
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small">NÚMERO DA NOTA</label>
+                        <input type="text" name="numero" class="form-control" value="{{ dados.numero }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small">SÉRIE</label>
+                        <input type="text" name="serie" class="form-control" value="{{ dados.serie }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small">DATA DE EMISSÃO</label>
+                        <input type="date" name="data_emissao" class="form-control" value="{{ dados.data_emissao }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small">NUP (PROTOCOLO)</label>
+                        <input type="text" name="nup" class="form-control" placeholder="00000.000000/2026-00">
                     </div>
 
-                    <div class="col-md-2 mb-3">
-
-                        <label class="form-label">
-
-                            Série
-
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="serie"
-                            value="{{ dados.serie if dados else '' }}">
-
+                    <div class="col-md-12">
+                        <label class="form-label text-muted small">RAZÃO SOCIAL DO FORNECEDOR</label>
+                        <input type="text" name="fornecedor" class="form-control" value="{{ dados.fornecedor }}">
                     </div>
 
-                    <div class="col-md-3 mb-3">
-
-                        <label class="form-label">
-
-                            Data Emissão
-
-                        </label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="data_emissao"
-                            value="{{ dados.data_emissao if dados else '' }}">
-
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">CNPJ DO PRESTADOR</label>
+                        <input type="text" name="cnpj" class="form-control" value="{{ dados.cnpj }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">CAMPANHA PUBLICITÁRIA</label>
+                        <input type="text" name="campanha" class="form-control" value="{{ dados.campanha }}">
                     </div>
 
-                    <div class="col-md-4 mb-3">
-
-                        <label class="form-label">
-
-                            Data Recebimento
-
-                        </label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="data_recebimento"
-                            value="{{ dados.data_recebimento if dados else '' }}">
-
+                    <div class="col-md-4">
+                        <label class="form-label text-muted small">CONTRATO Nº</label>
+                        <input type="text" name="contrato" class="form-control" value="{{ dados.contrato }}">
                     </div>
-
+                    <div class="col-md-4">
+                        <label class="form-label text-muted small">PEDIDO DE INSERÇÃO (PI)</label>
+                        <input type="text" name="pi" class="form-control" value="{{ dados.pi }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-muted small">VALOR BRUTO (R$)</label>
+                        <input type="text" name="valor" class="form-control fw-bold text-info" value="{{ dados.valor }}">
+                    </div>
                 </div>
 
-                <hr>
-
-                <h4 class="mb-3">Fornecedor</h4>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Fornecedor</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="fornecedor"
-                            value="{{ dados.fornecedor if dados else '' }}"
-                            required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Nome Fantasia</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="nome_fantasia"
-                            value="{{ dados.nome_fantasia if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">CNPJ</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="cnpj"
-                            value="{{ dados.cnpj if dados else '' }}">
-                    </div>
-
+                <div class="mt-5 d-flex justify-content-between">
+                    <a href="/importar" class="btn btn-outline-secondary">DESCARTAR</a>
+                    <button type="submit" class="btn btn-senado btn-lg px-5">AUTORIZAR REGISTRO</button>
                 </div>
-
-                <hr>
-
-                <h4 class="mb-3">Contrato</h4>
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Contrato</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="contrato"
-                            value="{{ dados.contrato if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Demanda</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="demanda"
-                            value="{{ dados.demanda if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Campanha</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="campanha"
-                            value="{{ dados.campanha if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-2 mb-3">
-                        <label class="form-label">PI</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="pi"
-                            value="{{ dados.pi if dados else '' }}">
-                    </div>
-
-                </div>
-
-                <hr>
-
-                <h4 class="mb-3">Serviço</h4>
-
-                <div class="row">
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Tipo de Serviço</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="tipo_servico"
-                            value="{{ dados.tipo_servico if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Meio</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="meio"
-                            value="{{ dados.meio if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Descrição</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="descricao"
-                            value="{{ dados.descricao if dados else '' }}">
-                    </div>
-
-                </div>
-
-                <hr>
-
-                <h4 class="mb-3">Praça</h4>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Tipo Praça</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="tipo_praca"
-                            value="{{ dados.tipo_praca if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Praça</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="praca"
-                            value="{{ dados.praca if dados else '' }}">
-                    </div>
-
-                </div>
-
-                <hr>
-
-                <h4 class="mb-3">Valores</h4>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Valor da Nota</label>
-                        <div class="input-group">
-                            <span class="input-group-text">R$</span>
-                            <input
-                                type="number"
-                                step="0.01"
-                                class="form-control"
-                                name="valor"
-                                value="{{ dados.valor if dados else '' }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Valor da Veiculação</label>
-                        <div class="input-group">
-                            <span class="input-group-text">R$</span>
-                            <input
-                                type="number"
-                                step="0.01"
-                                class="form-control"
-                                name="valor_veiculacao"
-                                value="{{ dados.valor_veiculacao if dados else '' }}">
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr>
-
-                <h4 class="mb-3">Controle</h4>
-
-                <div class="mb-3">
-                    <label class="form-label">Ocorrência</label>
-                    <textarea
-                        class="form-control"
-                        rows="4"
-                        name="ocorrencia">{{ dados.ocorrencia if dados else '' }}</textarea>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Conferente</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="conferente"
-                            value="{{ dados.conferente if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">NUP</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="nup"
-                            value="{{ dados.nup if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Data Envio</label>
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="data_envio"
-                            value="{{ dados.data_envio if dados else '' }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Data Pagamento</label>
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="data_pagamento"
-                            value="{{ dados.data_pagamento if dados else '' }}">
-                    </div>
-
-                </div>
-
-                <hr>
-
-                <h4 class="mb-3">PDF da Nota Fiscal</h4>
-
-                <div class="mb-4">
-                    <input
-                        type="file"
-                        class="form-control"
-                        name="pdf"
-                        accept=".pdf">
-                </div>
-
-                <div class="d-flex gap-2">
-
-                    <button
-                        type="submit"
-                        class="btn btn-success">
-                        Salvar Nota
-                    </button>
-
-                    <a
-                        href="/"
-                        class="btn btn-secondary">
-                        Cancelar
-                    </a>
-
-                </div>
-
             </form>
-
-        </div> <!-- card-body -->
-
-    </div> <!-- card -->
-
-</div> <!-- container -->
-
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
